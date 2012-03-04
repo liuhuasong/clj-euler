@@ -1,5 +1,11 @@
 pom.xml
+
 *jar
+
 /lib/
+
 /classes/
-.lein-deps-sum//.settings//bin
+
+.lein-deps-sum
+/.settings/
+/bin/
