@@ -5,8 +5,8 @@
   (:use [clojure.contrib.combinatorics :only (combinations)]))
 
 (defn repeating-digit [n] (ffirst (filter #(>= (second %) 3) (frequencies (digits n)))))
-(defn possible-masks [n] (combinations (positions #{(repeating-digit n)} (digits n)) 3))
-(defn apply-mask [mask n] (apply str (map-indexed #(if (some #{%1} mask) "x" %2) (digits n))))
+(defn possible-masks [n] (combinations (positions #{(repeating-digit n)} (reverse (digits n))) 3))
+(defn apply-mask [mask n] (apply str (map-indexed #(if (some #{%1} mask) "x" %2) (reverse (digits n)))))
 (defn families [n] (map #(apply-mask % n) (possible-masks n)))
 (defn family-map [n] (apply merge (map #(hash-map % [n]) (families n))))
 (defn family-comb [lst] (apply merge-with concat (map family-map lst)))
