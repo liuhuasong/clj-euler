@@ -17,9 +17,7 @@
         (recur (/ n factor) (conj acc factor))
         (conj acc n))))))
 
-(defn digits [x] 
-  (reverse
-    (map #(mod % 10) (take-while pos? (iterate #(quot % 10) x)))))
+(defn digits [x] (map #(mod % 10) (take-while pos? (iterate #(quot % 10) x))))
 
 ;this could be more efficient if we had log10 for huge numbers (inc (bigint (log10 x)))
 (defn num-digits [x] (count (str  x)))
