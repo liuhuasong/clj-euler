@@ -9,14 +9,14 @@
 (defn pyth-triplets []
   "Lazy sequence of all pythagorean triplets"
   (let [triplet-possible? (fn [a b]
-		"c² - b² = a²        | c is at least b + 1
+        "c² - b² = a²        | c is at least b + 1
 		((b + 1)² - b² <= a² | binomial theorem
 		2b + 1 <= a²         | a and b are integers
-    2b < a²"
+        2b < a²"
 		(< (* 2 b) (sqr a)))]
     
 	  (for [a (iterate inc 1)
 	        b (take-while #(triplet-possible? a %) (iterate inc (inc a))) 
 	        :let [[c r] (exact-integer-sqrt (+ (sqr a) (sqr b)))]
 	        :when (= 0 r)] 
-     [a b c])))
+            [a b c])))
