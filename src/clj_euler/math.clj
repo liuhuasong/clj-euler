@@ -21,7 +21,8 @@
   (reverse
     (map #(mod % 10) (take-while pos? (iterate #(quot % 10) x)))))
 
-(defn num-digits [n] (inc (int (Math/log10 (.doubleValue n)))))
+;this could be more efficient if we had log10 for huge numbers (inc (bigint (log10 x)))
+(defn num-digits [x] (count (str  x)))
 
 (defmulti palindromic? class)
 (defmethod palindromic? Number [x] (palindromic? (digits x)))
