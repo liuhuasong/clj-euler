@@ -1,0 +1,4 @@
+(ns clj-euler.problems.problem21
+  (:use [clj-euler.lazy-seqs :only (amicables)]))
+
+(def problem21 (reduce + (take-while #(< % 10000) (amicables))))
