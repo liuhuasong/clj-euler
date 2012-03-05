@@ -3,6 +3,8 @@
   (:require [clojure.contrib.string :as string])
   (:use [clojure.contrib.math :only (sqrt)]))
 
+(defn fac [n] (reduce * (range 1 (inc n))))
+
 (defn divisible? [x y] (zero? (rem x y)))
 
 (defn sqr [x] (* x x))
@@ -31,7 +33,13 @@
 (defn divisors [x] 
   (mapcat #(distinct (vector % (quot x %))) 
      (filter #(divisible? x %) 
-         (take-while #(< % (inc (sqrt x))) (iterate inc 1)))))
+         (take-while #(< % (inc (bigint (sqrt x)))) (iterate inc 1)))))
+
+(defn proper-divisors [x] (remove #{x} (divisors x)))
+
+(defn amicable? [x]
+  (let [sum-divisors #(reduce + (proper-divisors %)) sum (sum-divisors x)]
+    (and (= x (sum-divisors sum)) (not= x sum))))
 
 (defn num-divisors [x] 
   (reduce * (map #(inc (second %)) (frequencies (prime-factors x)))))

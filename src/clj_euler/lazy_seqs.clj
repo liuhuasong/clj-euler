@@ -1,5 +1,5 @@
 (ns clj-euler.lazy-seqs
-  (:use [clj-euler.math :only (sqr)])
+  (:use [clj-euler.math :only (sqr amicable?)])
   (:use [clojure.contrib.math :only (exact-integer-sqrt)]))
 
 (defn triangle-numbers [] (reductions  + (iterate inc 1)))
@@ -20,3 +20,5 @@
             :let [[c r] (exact-integer-sqrt (+ (sqr a) (sqr b)))]
             :when (= 0 r)] 
             [a b c])))
+
+(defn amicables [] (filter amicable? (iterate inc 1)))
