@@ -1,7 +1,7 @@
 (ns clj-euler.math
   (:use [clojure.contrib.lazy-seqs :only (primes)])
   (:require [clojure.contrib.string :as string])
-  (:use [clojure.contrib.math :only (sqrt)]))
+  (:use [clojure.contrib.math :only (sqrt expt)]))
 
 (defn fac [n] (reduce * (range 1 (inc n))))
 
@@ -13,7 +13,7 @@
 
 (defn prime-factors
   ([n] (prime-factors n []))
-  ([n acc] (if (= 1 n) acc 
+  ([n acc] (if (>= 1 n) acc 
      (let [factor (first-factor n primes)]
       (if factor 
         (recur (/ n factor) (conj acc factor))
@@ -33,15 +33,22 @@
 (defn divisors [x] 
   (mapcat #(distinct (vector % (quot x %))) 
      (filter #(divisible? x %) 
-         (take-while #(< % (inc (bigint (sqrt x)))) (iterate inc 1)))))
+         (take-while #(< % (inc (bigint (sqrt x)))) 
+                     (iterate (if (even? x) inc #(+ 2 %)) 1)))))
 
-(defn proper-divisors [x] (remove #{x} (divisors x)))
+(defn sum-divisors [x]
+  (if (= 0 x) 0
+    (reduce *
+          (map #(/ (dec (expt (first %) (inc (second %)))) 
+                   (dec (first %))) 
+                (frequencies (prime-factors x))))))
 
 (defn amicable? [x]
-  (let [sum-divisors #(reduce + (proper-divisors %)) sum (sum-divisors x)]
-    (and (= x (sum-divisors sum)) (not= x sum))))
+  (let [sum-proper-divisors #(- (sum-divisors %) %) y (sum-proper-divisors x)]
+    (and (not= x y) (= x (sum-proper-divisors y)))))
 
 (defn num-divisors [x] 
-  (reduce * (map #(inc (second %)) (frequencies (prime-factors x)))))
+  (if (= 0 x) 0
+    (reduce * (map #(inc (second %)) (frequencies (prime-factors x))))))
 
 (defn totient [x] (* x (reduce * (map #(- 1 (/ 1 %)) (distinct (prime-factors x))))))
