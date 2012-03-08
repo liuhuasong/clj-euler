@@ -8,4 +8,4 @@
   (reduce + (rest (filter 
      #(equals-n-powered % 5)
      ;9^5 * 7 is only a 6-digit number, so we don't need to look beyond that limit
-     (take-while #(< % 1000000) (iterate inc 1))))))
+     (range 1 1000000)))))
